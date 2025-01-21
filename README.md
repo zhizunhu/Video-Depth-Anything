@@ -1,6 +1,18 @@
 <div align="center">
 <h1>Video Depth Anything</h1>
+  
+[**Sili Chen**](https://github.com/SiliChen321)<sup>1</sup> · [**Hengkai Guo**](https://github.com/guohengkai)<sup>1&dagger;</sup> · [**Shengnan Zhu**](https://github.com/Shengnan-Zhu)<sup>1</sup>  · [**Feihu Zhang**]()<sup>1</sup>
+<br>
+  ·  [**Zilong Huang**](http://speedinghzl.github.io/)<sup>1</sup>   ·  [**Jiashi Feng**](https://sites.google.com/site/jshfeng/)<sup>2</sup>   ·  [**Bingyi Kang**](https://bingykang.github.io/)<sup>1&dagger;</sup> 
+<br>
+<sup>1</sup>ByteDance
+<br>
+&dagger;corresponding author
 
+<a href="https://arxiv.org/abs/25XX.XXXXX"><img src='https://img.shields.io/badge/arXiv-Video Depth Anything-red' alt='Paper PDF'></a>
+<a href='https://videodepthanything.github.io'><img src='https://img.shields.io/badge/Project_Page-Video Depth Anything-green' alt='Project Page'></a>
+<a href='https://huggingface.co/spaces/depth-anything/XXXXXX'><img src='https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Demo-blue'></a>
+</div>
 
 </div>
 
@@ -17,8 +29,8 @@ We provide **two models** of varying scales for robust and consistent video dept
 
 | Model | Params | Checkpoint |
 |:-|-:|:-:|
-| Depth-Anything-V2-Small | 28.4M | Coming soon |
-| Depth-Anything-V2-Large | 381.8M | Coming soon |
+| Video-Depth-Anything-V2-Small | 28.4M | Coming soon |
+| Video-Depth-Anything-V2-Large | 381.8M | Coming soon |
 
 
 ## Usage
@@ -40,13 +52,17 @@ python3 run.py --input_video ./assets/example_videos/basketball.mp4 --output_dir
 
 ## Acknowledgement
 
-## LICENSE
-
 ## Citation
 
 If you find this project useful, please consider citing:
 
 ```bibtex
+@article{video_depth_anything,
+  title={Video Depth Anything: Consistent Depth Estimation for Super-Long Videos},
+  author={Chen, Sili and Guo, Hengkai and Zhu, Shengnan and Zhang, Feihu and Huang, Zilong and Feng, Jiashi and Kang, Bingyi}
+  journal={arXiv:2XXX.XXXXX},
+  year={2024}
+}
 ```
 
 
