@@ -11,7 +11,7 @@
 
 <a href="https://arxiv.org/abs/25XX.XXXXX"><img src='https://img.shields.io/badge/arXiv-Video Depth Anything-red' alt='Paper PDF'></a>
 <a href='https://videodepthanything.github.io'><img src='https://img.shields.io/badge/Project_Page-Video Depth Anything-green' alt='Project Page'></a>
-<a href='https://huggingface.co/spaces/depth-anything/XXXXXX'><img src='https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Demo-blue'></a>
+<a href='https://huggingface.co/spaces/depth-anything/Video-Depth-Anything'><img src='https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Demo-blue'></a>
 </div>
 
 </div>
@@ -29,8 +29,8 @@ We provide **two models** of varying scales for robust and consistent video dept
 
 | Model | Params | Checkpoint |
 |:-|-:|:-:|
-| Video-Depth-Anything-V2-Small | 28.4M | Coming soon |
-| Video-Depth-Anything-V2-Large | 381.8M | Coming soon |
+| Video-Depth-Anything-V2-Small | 28.4M | [Download](https://huggingface.co/depth-anything/Video-Depth-Anything-Small/resolve/main/video_depth_anything_vits.pth?download=true) |
+| Video-Depth-Anything-V2-Large | 381.8M | [Download](https://huggingface.co/depth-anything/Video-Depth-Anything-Large/resolve/main/video_depth_anything_vitl.pth?download=true) |
 
 
 ## Usage
@@ -49,8 +49,6 @@ Download the checkpoints listed [here](#pre-trained-models) and put them under t
 ```bash
 python3 run.py --input_video ./assets/example_videos/basketball.mp4 --output_dir ./outputs --encoder vitl
 ```
-
-## Acknowledgement
 
 ## Citation
 
