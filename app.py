@@ -22,7 +22,7 @@ from video_depth_anything.video_depth import VideoDepthAnything
 from utils.dc_utils import read_video_frames, vis_sequence_depth, save_video
 
 examples = [
-    ['assets/example_videos/basketball.mp4'],
+    ['assets/example_videos/davis_rollercoaster.mp4'],
 ]
 
 model_configs = {
