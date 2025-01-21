@@ -1,11 +1,11 @@
 <div align="center">
 <h1>Video Depth Anything</h1>
   
-[**Sili Chen**](https://github.com/SiliChen321)<sup>1</sup> · [**Hengkai Guo**](https://github.com/guohengkai)<sup>1&dagger;</sup> · [**Shengnan Zhu**](https://github.com/Shengnan-Zhu)<sup>1</sup>  · [**Feihu Zhang**](https://github.com/zhizunhu)<sup>1</sup>
+[**Sili Chen**](https://github.com/SiliChen321) · [**Hengkai Guo**](https://github.com/guohengkai)<sup>&dagger;</sup> · [**Shengnan Zhu**](https://github.com/Shengnan-Zhu)  · [**Feihu Zhang**](https://github.com/zhizunhu)
 <br>
-  ·  [**Zilong Huang**](http://speedinghzl.github.io/)<sup>1</sup>   ·  [**Jiashi Feng**](https://scholar.google.com.sg/citations?user=Q8iay0gAAAAJ&hl=en)<sup>1</sup>   ·  [**Bingyi Kang**](https://bingykang.github.io/)<sup>1&dagger;</sup> 
+[**Zilong Huang**](http://speedinghzl.github.io/)   ·  [**Jiashi Feng**](https://scholar.google.com.sg/citations?user=Q8iay0gAAAAJ&hl=en)   ·  [**Bingyi Kang**](https://bingykang.github.io/)<sup>&dagger;</sup> 
 <br>
-<sup>1</sup>ByteDance
+ByteDance
 <br>
 &dagger;corresponding author
 
