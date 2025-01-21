@@ -3,7 +3,7 @@
   
 [**Sili Chen**](https://github.com/SiliChen321)<sup>1</sup> · [**Hengkai Guo**](https://github.com/guohengkai)<sup>1&dagger;</sup> · [**Shengnan Zhu**](https://github.com/Shengnan-Zhu)<sup>1</sup>  · [**Feihu Zhang**]()<sup>1</sup>
 <br>
-  ·  [**Zilong Huang**](http://speedinghzl.github.io/)<sup>1</sup>   ·  [**Jiashi Feng**](https://sites.google.com/site/jshfeng/)<sup>2</sup>   ·  [**Bingyi Kang**](https://bingykang.github.io/)<sup>1&dagger;</sup> 
+  ·  [**Zilong Huang**](http://speedinghzl.github.io/)<sup>1</sup>   ·  [**Jiashi Feng**](https://sites.google.com/site/jshfeng/)<sup>1</sup>   ·  [**Bingyi Kang**](https://bingykang.github.io/)<sup>1&dagger;</sup> 
 <br>
 <sup>1</sup>ByteDance
 <br>
