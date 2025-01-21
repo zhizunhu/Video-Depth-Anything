@@ -1,7 +1,7 @@
 <div align="center">
 <h1>Video Depth Anything</h1>
   
-[**Sili Chen**](https://github.com/SiliChen321)<sup>1</sup> · [**Hengkai Guo**](https://github.com/guohengkai)<sup>1&dagger;</sup> · [**Shengnan Zhu**](https://github.com/Shengnan-Zhu)<sup>1</sup>  · [**Feihu Zhang**]()<sup>1</sup>
+[**Sili Chen**](https://github.com/SiliChen321)<sup>1</sup> · [**Hengkai Guo**](https://github.com/guohengkai)<sup>1&dagger;</sup> · [**Shengnan Zhu**](https://github.com/Shengnan-Zhu)<sup>1</sup>  · [**Feihu Zhang**](https://github.com/zhizunhu)<sup>1</sup>
 <br>
   ·  [**Zilong Huang**](http://speedinghzl.github.io/)<sup>1</sup>   ·  [**Jiashi Feng**](https://sites.google.com/site/jshfeng/)<sup>1</sup>   ·  [**Bingyi Kang**](https://bingykang.github.io/)<sup>1&dagger;</sup> 
 <br>
@@ -21,7 +21,7 @@ This work presents **Video Depth Anything** based on [Depth Anything V2](https:/
 ![teaser](assets/teaser_video_v2.png)
 
 ## News
-- **2025-01-25:** Paper, project page, code, models, and demo are all released.
+- **2025-01-21:** Paper, project page, code, models, and demo are all released.
 
 
 ## Pre-trained Models
