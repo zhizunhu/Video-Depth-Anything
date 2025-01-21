@@ -1,5 +1,8 @@
-# This file may have been modified by Bytedance Ltd. and/or its affiliates (“Bytedance's Modifications”). 
-# All Bytedance's Modifications are Copyright (2025) Bytedance Ltd. and/or its affiliates. 
+# This file is originally from DepthCrafter/depthcrafter/utils.py at main · Tencent/DepthCrafter
+# SPDX-License-Identifier: MIT License license
+#
+# This file may have been modified by ByteDance Ltd. and/or its affiliates on [date of modification]
+# Original file is released under [ MIT License license], with the full license text available at [https://github.com/Tencent/DepthCrafter?tab=License-1-ov-file].
 from typing import Union, List
 import tempfile
 import numpy as np
