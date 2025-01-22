@@ -1,0 +1,12 @@
+numpy
+torch
+torchvision
+opencv-python
+matplotlib
+pillow
+mediapy
+decord
+xformers
+einops
+easydict
+tqdm
