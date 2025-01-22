@@ -12,6 +12,15 @@ from .attention import CrossAttention, FeedForward, apply_rotary_emb, precompute
 from einops import rearrange, repeat
 import math
 
+try:
+    import xformers
+    import xformers.ops
+
+    XFORMERS_AVAILABLE = True
+except ImportError:
+    print("xFormers not available")
+    XFORMERS_AVAILABLE = False
+
 
 def zero_module(module):
     # Zero out the parameters of a module and return it.
@@ -33,7 +42,7 @@ class TemporalModule(nn.Module):
         pos_embedding_type                 = "ape",
     ):
         super().__init__()
-        
+
         self.temporal_transformer = TemporalTransformer3DModel(
             in_channels=in_channels,
             num_attention_heads=num_attention_heads,
@@ -44,7 +53,7 @@ class TemporalModule(nn.Module):
             temporal_max_len=temporal_max_len,
             pos_embedding_type=pos_embedding_type,
         )
-        
+
         if zero_initialize:
             self.temporal_transformer.proj_out = zero_module(self.temporal_transformer.proj_out)
 
@@ -63,7 +72,7 @@ class TemporalTransformer3DModel(nn.Module):
         num_attention_heads,
         attention_head_dim,
         num_layers,
-        num_attention_blocks               = 2,    
+        num_attention_blocks               = 2,
         norm_num_groups                    = 32,
         temporal_max_len                   = 32,
         pos_embedding_type                 = "ape",
@@ -88,8 +97,8 @@ class TemporalTransformer3DModel(nn.Module):
                 for d in range(num_layers)
             ]
         )
-        self.proj_out = nn.Linear(inner_dim, in_channels)    
-    
+        self.proj_out = nn.Linear(inner_dim, in_channels)
+
     def forward(self, hidden_states, encoder_hidden_states=None, attention_mask=None):
         assert hidden_states.dim() == 5, f"Expected hidden_states to have ndim=5, but got ndim={hidden_states.dim()}."
         video_length = hidden_states.shape[2]
@@ -106,14 +115,14 @@ class TemporalTransformer3DModel(nn.Module):
         # Transformer Blocks
         for block in self.transformer_blocks:
             hidden_states = block(hidden_states, encoder_hidden_states=encoder_hidden_states, video_length=video_length, attention_mask=attention_mask)
-        
+
         # output
         hidden_states = self.proj_out(hidden_states)
         hidden_states = hidden_states.reshape(batch, height, width, inner_dim).permute(0, 3, 1, 2).contiguous()
 
         output = hidden_states + residual
         output = rearrange(output, "(b f) c h w -> b c f h w", f=video_length)
-        
+
         return output
 
 
@@ -161,18 +170,18 @@ class TemporalTransformerBlock(nn.Module):
                 video_length=video_length,
                 attention_mask=attention_mask,
             ) + hidden_states
-            
+
         hidden_states = self.ff(self.ff_norm(hidden_states)) + hidden_states
-        
-        output = hidden_states  
+
+        output = hidden_states
         return output
 
 
 class PositionalEncoding(nn.Module):
     def __init__(
-        self, 
-        d_model, 
-        dropout = 0., 
+        self,
+        d_model,
+        dropout = 0.,
         max_len = 32
     ):
         super().__init__()
@@ -192,7 +201,7 @@ class TemporalAttention(CrossAttention):
     def __init__(
             self,
             temporal_max_len                   = 32,
-            pos_embedding_type                 = "ape", 
+            pos_embedding_type                 = "ape",
             *args, **kwargs
         ):
         super().__init__(*args, **kwargs)
@@ -205,7 +214,7 @@ class TemporalAttention(CrossAttention):
         if self.pos_embedding_type == "ape":
             self.pos_encoder = PositionalEncoding(
                 kwargs["query_dim"],
-                dropout=0., 
+                dropout=0.,
                 max_len=temporal_max_len
             )
 
@@ -214,17 +223,17 @@ class TemporalAttention(CrossAttention):
                 kwargs["query_dim"],
                 temporal_max_len
             )
-        
+
         else:
             raise NotImplementedError
 
     def forward(self, hidden_states, encoder_hidden_states=None, attention_mask=None, video_length=None):
         d = hidden_states.shape[1]
         hidden_states = rearrange(hidden_states, "(b f) d c -> (b d) f c", f=video_length)
-        
+
         if self.pos_encoder is not None:
             hidden_states = self.pos_encoder(hidden_states)
-        
+
         encoder_hidden_states = repeat(encoder_hidden_states, "b n c -> (b d) n c", d=d) if encoder_hidden_states is not None else encoder_hidden_states
 
         if self.group_norm is not None:
@@ -252,7 +261,7 @@ class TemporalAttention(CrossAttention):
                 attention_mask = attention_mask.repeat_interleave(self.heads, dim=0)
 
 
-        use_memory_efficient = self._use_memory_efficient_attention_xformers
+        use_memory_efficient = XFORMERS_AVAILABLE and self._use_memory_efficient_attention_xformers
         if use_memory_efficient and (dim // self.heads) % 8 != 0:
             # print('Warning: the dim {} cannot be divided by 8. Fall into normal attention'.format(dim // self.heads))
             use_memory_efficient = False

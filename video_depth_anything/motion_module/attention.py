@@ -17,8 +17,14 @@ import torch
 import torch.nn.functional as F
 from torch import nn
 
-import xformers
-import xformers.ops
+try:
+    import xformers
+    import xformers.ops
+
+    XFORMERS_AVAILABLE = True
+except ImportError:
+    print("xFormers not available")
+    XFORMERS_AVAILABLE = False
 
 
 class CrossAttention(nn.Module):
@@ -156,7 +162,7 @@ class CrossAttention(nn.Module):
                 attention_mask = attention_mask.repeat_interleave(self.heads, dim=0)
 
         # attention, what we cannot get enough of
-        if self._use_memory_efficient_attention_xformers:
+        if XFORMERS_AVAILABLE and self._use_memory_efficient_attention_xformers:
             hidden_states = self._memory_efficient_attention_xformers(query, key, value, attention_mask)
             # Some versions of xformers return output in fp32, cast it back to the dtype of the input
             hidden_states = hidden_states.to(query.dtype)
@@ -256,10 +262,10 @@ class CrossAttention(nn.Module):
             if attention_mask is not None:
                 attention_mask = attention_mask.float()
         hidden_states = self._memory_efficient_attention_split(query, key, value, attention_mask)
-        
+
         if self.upcast_efficient_attention:
             hidden_states = hidden_states.to(org_dtype)
-        
+
         hidden_states = self.reshape_4d_to_heads(hidden_states)
         return hidden_states
 
