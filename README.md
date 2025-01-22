@@ -7,9 +7,9 @@
 <br>
 ByteDance
 <br>
-&dagger;corresponding author
+&dagger;Corresponding author
 
-<a href="https://arxiv.org/abs/25XX.XXXXX"><img src='https://img.shields.io/badge/arXiv-Video Depth Anything-red' alt='Paper PDF'></a>
+<a href="https://arxiv.org/abs/2501.12375"><img src='https://img.shields.io/badge/arXiv-Video Depth Anything-red' alt='Paper PDF'></a>
 <a href='https://videodepthanything.github.io'><img src='https://img.shields.io/badge/Project_Page-Video Depth Anything-green' alt='Project Page'></a>
 <a href='https://huggingface.co/spaces/depth-anything/Video-Depth-Anything'><img src='https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Demo-blue'></a>
 </div>
@@ -58,8 +58,8 @@ If you find this project useful, please consider citing:
 @article{video_depth_anything,
   title={Video Depth Anything: Consistent Depth Estimation for Super-Long Videos},
   author={Chen, Sili and Guo, Hengkai and Zhu, Shengnan and Zhang, Feihu and Huang, Zilong and Feng, Jiashi and Kang, Bingyi}
-  journal={arXiv:2XXX.XXXXX},
-  year={2024}
+  journal={arXiv:2501.12375},
+  year={2025}
 }
 ```
 
