@@ -47,7 +47,7 @@ Download the checkpoints listed [here](#pre-trained-models) and put them under t
 
 ### Inference a video
 ```bash
-python3 run.py --input_video ./assets/example_videos/basketball.mp4 --output_dir ./outputs --encoder vitl
+python3 run.py --input_video ./assets/example_videos/davis_rollercoaster.mp4 --output_dir ./outputs --encoder vitl
 ```
 
 ## Citation
