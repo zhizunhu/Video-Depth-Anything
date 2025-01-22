@@ -65,6 +65,12 @@ class VideoDepthAnything(nn.Module):
         return depth.squeeze(1).unflatten(0, (B, T)) # return shape [B, T, H, W]
     
     def infer_video_depth(self, frames, target_fps, input_size=518, device='cuda'):
+        frame_height, frame_width = frames[0].shape[:2]
+        ratio = max(frame_height, frame_width) / min(frame_height, frame_width)
+        if ratio > 1.78:  # we recommend to process video with ratio smaller than 16:9 due to memory limitation
+            input_size = int(input_size * 1.777 / ratio)
+            input_size = round(input_size / 14) * 14
+
         transform = Compose([
             Resize(
                 width=input_size,
@@ -79,7 +85,6 @@ class VideoDepthAnything(nn.Module):
             PrepareForNet(),
         ])
 
-        frame_size = frames[0].shape[:2]
         frame_list = [frames[i] for i in range(frames.shape[0])]
         frame_step = INFER_LEN - OVERLAP
         org_video_len = len(frame_list)
@@ -99,7 +104,7 @@ class VideoDepthAnything(nn.Module):
             with torch.no_grad():
                 depth = self.forward(cur_input) # depth shape: [1, T, H, W]
 
-            depth = F.interpolate(depth.flatten(0,1).unsqueeze(1), size=frame_size, mode='bilinear', align_corners=True)
+            depth = F.interpolate(depth.flatten(0,1).unsqueeze(1), size=(frame_height, frame_width), mode='bilinear', align_corners=True)
             depth_list += [depth[i][0].cpu().numpy() for i in range(depth.shape[0])]
 
             pre_input = cur_input

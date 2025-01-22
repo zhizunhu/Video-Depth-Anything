@@ -44,6 +44,9 @@ pip install -r requirements.txt
 ```
 
 Download the checkpoints listed [here](#pre-trained-models) and put them under the `checkpoints` directory.
+```bash
+bash get_weights.sh
+```
 
 ### Inference a video
 ```bash
