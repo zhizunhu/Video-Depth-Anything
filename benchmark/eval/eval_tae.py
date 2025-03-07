@@ -13,9 +13,7 @@ import torch
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 def compute_errors_torch(gt, pred):
-
     abs_rel = torch.mean(torch.abs(gt - pred) / gt)
-
     return abs_rel
     
 def get_infer(infer_path,args, target_size = None):
@@ -47,8 +45,6 @@ def get_gt(depth_gt_path, gt_factor, args):
     depth_gt = depth_gt / gt_factor
     
     depth_gt[depth_gt==0] = 0
-
-
     return depth_gt
 
 def depth2disparity(depth, return_mask=False):
@@ -63,7 +59,6 @@ def depth2disparity(depth, return_mask=False):
 
 def tae_torch(depth1, depth2, R_2_1, T_2_1, K, mask):
     H, W = depth1.shape
-
     fx, fy, cx, cy = K[0, 0], K[1, 1], K[0, 2], K[1, 2]
 
     # Generate meshgrid
@@ -73,21 +68,16 @@ def tae_torch(depth1, depth2, R_2_1, T_2_1, K, mask):
     # Convert meshgrid to tensor
     xx = xx.to(dtype=depth1.dtype, device=depth1.device)
     yy = yy.to(dtype=depth1.dtype, device=depth1.device)
-
     # Calculate 3D points in frame 1
     X = (xx - cx) * depth1 / fx
     Y = (yy - cy) * depth1 / fy
     Z = depth1
-
     points3d = torch.stack((X.flatten(), Y.flatten(), Z.flatten()), dim=1)  # Shape (H*W, 3)
-
     T = torch.tensor(T_2_1, dtype=depth1.dtype, device=depth1.device)
 
     # Transform 3D points to frame 2
     points3d_transformed = torch.matmul(points3d, R_2_1.T) + T
-
     X_world, Y_world, Z_world = points3d_transformed[:, 0], points3d_transformed[:, 1], points3d_transformed[:, 2]
-
     # Project 3D points to 2D plane using intrinsic matrix
     X_plane = (X_world * fx) / Z_world + cx
     Y_plane = (Y_world * fy) / Z_world + cy
@@ -168,7 +158,6 @@ def eval_TAE(infer_paths, depth_gt_paths, factors, masks, Ks, poses, args):
     
     error_sum = 0.
     for i in range(len(gt_paths_cur) -1):
-        #start = time.time()
         depth1 = pred_depth[i]
         depth2 = pred_depth[i+1]
 
@@ -181,7 +170,6 @@ def eval_TAE(infer_paths, depth_gt_paths, factors, masks, Ks, poses, args):
         
         R_2_1 = T_2_1[:3,:3]
         t_2_1 = T_2_1[:3, 3]
-
         K = Ks_cur[i]
         
         if args.mask:
@@ -212,8 +200,6 @@ def eval_TAE(infer_paths, depth_gt_paths, factors, masks, Ks, poses, args):
         mask2 = torch.from_numpy(mask2).to(device=device)
 
         error1 = tae_torch(depth1, depth2, R_2_1, t_2_1, K, mask2)
-        
-
         T_1_2 = np.linalg.inv(T_2_1)
         R_1_2 = T_1_2[:3,:3]
         t_1_2 = T_1_2[:3, 3]
@@ -223,12 +209,10 @@ def eval_TAE(infer_paths, depth_gt_paths, factors, masks, Ks, poses, args):
 
         error2 = tae_torch(depth2, depth1, R_1_2, t_1_2, K, mask1)
         
-        
         error_sum += error1
         error_sum += error2
     
     gc.collect()
-    
     result = error_sum / (2 * (len(gt_paths_cur) -1))
     return result*100
 
@@ -251,7 +235,6 @@ if __name__ == '__main__':
     for dataset in args.datasets:
 
         file = open(results_save_path, 'a')
-
         if dataset == 'scannet':
             args.json_file = os.path.join(args.benchmark_path,'video_benchmark_tae/scannet/scannet_video.json')
             args.root_path = os.path.join(args.benchmark_path, 'video_benchmark_tae/scannet/')
@@ -294,7 +277,6 @@ if __name__ == '__main__':
                 Ks = []
                 poses = []
                 masks = []
-               
                 for images in value:
                     infer_path = (args.infer_path + '/'+ dataset + '/' + images['image']).replace('.jpg', '.npy').replace('.png', '.npy')
                     

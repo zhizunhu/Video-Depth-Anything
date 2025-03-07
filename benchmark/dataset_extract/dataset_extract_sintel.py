@@ -83,7 +83,6 @@ def gen_json(root_path, out_path):
 
             T_1 = np.eye(4)
             T_1[:3,:] = N1
-
             T_1 = np.linalg.inv(T_1)
             
             tmp = {}
@@ -143,8 +142,6 @@ def extract_sintel(
                     rigidity_root, seq_name, all_img_names[idx][:-3] + "png"
                 )
                  
-                # depth = depth_read(depth_path)
-                # depth = depth * 65535 / 650
                 depth_path = depth_path = osp.join(
                     depth_root, seq_name, all_img_names[idx][:-3] + "png"
                 )
@@ -183,14 +180,6 @@ def extract_sintel(
     gen_json(
         root_path=osp.join(saved_dir, datatset_name),
         out_path=osp.join(saved_dir, datatset_name, "sintel_video.json"))
-        
-
-                
-
-            
-
-            
-
 
 if __name__ == "__main__":
     extract_sintel(

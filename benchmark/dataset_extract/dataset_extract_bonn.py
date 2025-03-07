@@ -24,9 +24,6 @@ def gen_json(root_path, start_id, end_id, step, save_path=None):
         images = natsorted(images)
         depths = glob.glob(os.path.join(piece, "depth/*.png"))
         depths = natsorted(depths)
-        
-        # images = images[10:-10] 
-        # depths = depths[10:len(images)+10]
         images = images[start_id:end_id:step]
         depths = depths[start_id:end_id:step]
         
@@ -34,16 +31,12 @@ def gen_json(root_path, start_id, end_id, step, save_path=None):
             image = images[i]
             xx = image[len(root_path)+1:]
             depth = depths[i][len(root_path)+1:]
-            
             tmp = {}
             tmp["image"] = xx
             tmp["gt_depth"] = depth
             tmp["factor"] = 5000.0
-
             name_dict[name].append(tmp)
-        
         data["bonn"].append(name_dict)
-        
     with open(save_path, "w") as f:
         json.dump(data, f, indent= 4)  
 
@@ -68,10 +61,8 @@ def extract_bonn(
         all_img_names = [x for x in all_img_names if x.endswith(".png")]
         print(f"sequence frame number: {len(all_img_names)}")
 
-        # for not zero padding image name
         all_img_names.sort()
         all_img_names = sorted(all_img_names, key=lambda x: int(x.split(".")[0][-4:]))
-        #all_img_names = all_img_names[start_frame:end_frame]
 
         all_depth_names = os.listdir(osp.join(depth_root, seq_name, "depth"))
         all_depth_names = [x for x in all_depth_names if x.endswith(".png")]
@@ -82,23 +73,19 @@ def extract_bonn(
         all_depth_names = sorted(
             all_depth_names, key=lambda x: int(x.split(".")[0][-4:])
         )
-        #all_depth_names = all_depth_names[start_frame:end_frame]
 
         seq_len = len(all_img_names)
         step = sample_len if sample_len > 0 else seq_len
 
         for ref_idx in range(0, seq_len, step):
             print(f"Progress: {seq_name}, {ref_idx // step + 1} / {seq_len//step}")
-
             video_imgs = []
             video_depths = []
-
             if (ref_idx + step) <= seq_len:
                 ref_e = ref_idx + step
             else:
                 continue
 
-            # for idx in range(ref_idx, ref_idx + step):
             for idx in range(ref_idx, ref_e):
                 im_path = osp.join(root, seq_name, "rgb", all_img_names[idx])
                 depth_path = osp.join(
@@ -106,13 +93,10 @@ def extract_bonn(
                 )
 
                 img = np.array(Image.open(im_path))
-
                 height, width = img.shape[:2]
                 height = even_or_odd(height)
                 width = even_or_odd(width)
                 img = img[:height, :width, :]
-                #depth = depth[:height, :width]
-                
                 out_img_path = osp.join(
                     saved_dir, datatset_name,seq_name, "rgb", all_img_names[idx]
                 )

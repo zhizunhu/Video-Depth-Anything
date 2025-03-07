@@ -19,13 +19,6 @@ eval_metrics = [
     "abs_relative_difference",
     "rmse_linear",
     "delta1_acc",
-    # "squared_relative_difference",
-    # "rmse_log",
-    # "log10",
-    # "delta2_acc",
-    # "delta3_acc",
-    # "i_rmse",
-    # "silog_rmse",
 ]
 
 def get_infer(infer_path,args, target_size = None):
@@ -53,10 +46,7 @@ def get_gt(depth_gt_path, gt_factor, args):
         depth_gt = cv2.imread(depth_gt_path, -1)
         depth_gt = np.array(depth_gt)
     depth_gt = depth_gt / gt_factor
-    
     depth_gt[depth_gt==0] = -1
-
-
     return depth_gt
 
 def get_flow(flow_path):
@@ -86,7 +76,6 @@ def eval_depthcrafter(infer_paths, depth_gt_paths, factors, args):
         depth_gt = depth_gt[args.a:args.b, args.c:args.d]
         
         infer = get_infer(infer_paths[i], args, target_size=depth_gt.shape)
-
         gts.append(depth_gt)
         infs.append(infer)
     gts = np.stack(gts, axis=0)
@@ -94,8 +83,6 @@ def eval_depthcrafter(infer_paths, depth_gt_paths, factors, args):
     infs = np.stack(infs, axis=0)
     infs = infs[:seq_length]
     gts = gts[:seq_length]
-    #print(infs[0])
-
     valid_mask = np.logical_and((gts>1e-3), (gts<dataset_max_depth))
     
     gt_disp_masked = 1. / (gts[valid_mask].reshape((-1,1)).astype(np.float64) + 1e-8)
@@ -106,7 +93,6 @@ def eval_depthcrafter(infer_paths, depth_gt_paths, factors, args):
     A = np.concatenate([pred_disp_masked, _ones], axis=-1)
     X = np.linalg.lstsq(A, gt_disp_masked, rcond=None)[0]
     scale, shift = X
-    #print(scale, shift)
     aligned_pred = scale * infs + shift
     aligned_pred = np.clip(aligned_pred, a_min=1e-3, a_max=None)
 
@@ -115,7 +101,6 @@ def eval_depthcrafter(infer_paths, depth_gt_paths, factors, args):
     pred_depth = np.clip(
             pred_depth, a_min=1e-3, a_max=dataset_max_depth
         )
-    #print('xx')
     sample_metric = []
     metric_funcs = [getattr(metric, _met) for _met in eval_metrics]
 
@@ -133,7 +118,6 @@ def eval_depthcrafter(infer_paths, depth_gt_paths, factors, args):
         _metric_name = met_func.__name__
         _metric = met_func(pred_depth_ts, gt_depth_ts, valid_mask_ts).item()
         sample_metric.append(_metric)
-    #print(sample_metric)
     return sample_metric
 
 
@@ -145,8 +129,6 @@ def main():
     parser.add_argument('--benchmark_path', type=str, default='')
     parser.add_argument('--datasets', type=str, nargs='+', default=['vkitti', 'kitti', 'sintel', 'nyu_v2', 'tartanair', 'bonn', 'ip_lidar'])
     
-
-
     args = parser.parse_args()
 
     results_save_path = os.path.join(args.infer_path, 'results.txt')
@@ -261,7 +243,6 @@ def main():
                 flow_paths = []
                 factors = []
                 for images in value:
-                    
                     infer_path = (args.infer_path + '/'+ dataset + '/' + images['image']).replace('.jpg', '.npy').replace('.png', '.npy')
                     
                     infer_paths.append(infer_path)

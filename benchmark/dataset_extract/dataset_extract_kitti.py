@@ -26,23 +26,17 @@ def gen_json(root_path, start_id, end_id, step, save_path=None):
         depths = glob.glob(os.path.join(piece, "depth/*.png"))
         depths = natsorted(depths)
         
-        # images = images[10:-10] 
-        # depths = depths[10:len(images)+10]
         images = images[start_id:end_id:step]
         depths = depths[start_id:end_id:step]
-
         for i in range(len(images)):
             image = images[i]
             xx = image[len(root_path)+1:]
             depth = depths[i][len(root_path)+1:]
-            
             tmp = {}
             tmp["image"] = xx
             tmp["gt_depth"] = depth
             tmp["factor"] = 256.0
-
             name_dict[name].append(tmp)
-        
         data["kitti"].append(name_dict)
         
     with open(save_path, "w") as f:
@@ -78,7 +72,6 @@ def extract_kitti(
 
         for ref_idx in range(0, seq_len, step):
             print(f"Progress: {seq_name}, {ref_idx // step + 1} / {seq_len//step}")
-
             video_imgs = []
             video_depths = []
 
@@ -98,13 +91,10 @@ def extract_kitti(
                     all_img_names[idx],
                 )
                 img = np.array(Image.open(im_path))
-
                 height, width = img.shape[:2]
                 height = even_or_odd(height)
                 width = even_or_odd(width)
                 img = img[:height, :width]
-                #depth = depth[:height, :width]
-                
                 out_img_path = osp.join(
                     saved_dir, datatset_name,seq_name, "rgb", all_img_names[idx]
                 )
@@ -128,9 +118,6 @@ def extract_kitti(
     gen_json(
         root_path=osp.join(saved_dir, datatset_name),
         start_id=0, end_id=500, step=1, save_path=out_json_path)      
-
-            
-
 
 if __name__ == "__main__":
     extract_kitti(

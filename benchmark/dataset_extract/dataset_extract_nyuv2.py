@@ -28,8 +28,6 @@ def gen_json(root_path, start_id, end_id, step, save_path=None):
         depths = natsorted(depths)
         images = images[start_id:end_id:step]
         depths = depths[start_id:end_id:step]
-        # images = images[30:140]
-        # depths = depths[30:140]
         count = 0
         for i in range(len(images)):
             image = images[i]
@@ -41,10 +39,6 @@ def gen_json(root_path, start_id, end_id, step, save_path=None):
             tmp["gt_depth"] = depth
             tmp["factor"] = 6000.0
             name_dict[name].append(tmp)
-
-            # count += 1
-            # if count > 300:
-            #     break
         data["nyuv2"].append(name_dict)
         
     with open(save_path, "w") as f:
@@ -63,7 +57,6 @@ def extract_nyuv2(
         all_img_names = os.listdir(osp.join(root, seq_name, "rgb"))
         all_img_names = [x for x in all_img_names if x.endswith(".jpg")]
         all_img_names = sorted(all_img_names, key=lambda x: int(x.split(".")[0]))
-        #all_img_names = all_img_names[:scene_frames_len:stride]
         print(f"sequence frame number: {len(all_img_names)}")
 
         seq_len = len(all_img_names)
@@ -90,7 +83,6 @@ def extract_nyuv2(
                 img = np.array(Image.open(im_path))
 
                 img = img[45:471, 41:601, :]
-                #depth = depth[45:471, 41:601]
                 out_img_path = osp.join(
                     saved_dir, datatset_name, seq_name, "rgb", all_img_names[idx]
                 )
@@ -119,11 +111,6 @@ def extract_nyuv2(
         step=1,
         save_path=out_json_path,
     )
-
-                
-
-
-
 
 if __name__ == "__main__":
     # we use matlab to extract 8 scenes from NYUv2

@@ -10,19 +10,6 @@ import glob
 from natsort import natsorted
 import shutil
 
-
-# def _read_image(img_rel_path) -> np.ndarray:
-#     image_to_read = img_rel_path
-#     image = Image.open(image_to_read)  # [H, W, rgb]
-#     image = np.asarray(image)
-#     return image
-
-
-# def depth_read(filename):
-#     depth_in = _read_image(filename)
-#     #depth_decoded = depth_in / 1000.0
-#     return depth_in
-
 def gen_json(root_path, start_id, end_id, step, save_path=None, original=False):
     data = {}
     data["scannet"] = []
@@ -42,8 +29,6 @@ def gen_json(root_path, start_id, end_id, step, save_path=None, original=False):
         images = images[start_id:end_id:step]
         depths = depths[start_id:end_id:step]
         print(f"sequence frame number: {piece}")
-        # images = images[30:140]
-        # depths = depths[30:140]
         count = 0
         for i in range(len(images)):
             image = images[i]
@@ -64,10 +49,6 @@ def gen_json(root_path, start_id, end_id, step, save_path=None, original=False):
             tmp["K"] = K.tolist()
             tmp["pose"] = pose.tolist()
             name_dict[name].append(tmp)
-
-            # count += 1
-            # if count > 300:
-            #     break
         data["scannet"].append(name_dict)
         
     with open(save_path, "w") as f:
@@ -112,12 +93,9 @@ def extract_scannet(
                     root, seq_name, "pose", all_img_names[idx][:-3] + "txt"
                 )
 
-                #depth = depth_read(depth_path)
                 img = np.array(Image.open(im_path))
                 origin_img = img.copy()
-
                 img = img[8:-8, 11:-11, :]
-                #depth = depth[8:-8, 11:-11]
                 out_img_path = osp.join(
                     saved_dir, datatset_name, seq_name, "color", all_img_names[idx]
                 )
@@ -184,11 +162,6 @@ def extract_scannet(
         save_path=out_json_path,
         original=True,
     )
-
-                
-
-
-
 
 if __name__ == "__main__":
     extract_scannet(

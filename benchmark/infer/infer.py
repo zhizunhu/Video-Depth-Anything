@@ -9,7 +9,6 @@ import numpy as np
 from video_depth_anything.video_depth import VideoDepthAnything
 from utils.dc_utils import read_video_frames
 
-
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--infer_path', type=str, default='')
@@ -18,8 +17,7 @@ if __name__ == '__main__':
     parser.add_argument('--datasets', type=str, nargs='+', default=['scannet', 'nyuv2'])
     
     parser.add_argument('--input_size', type=int, default=518)
-    parser.add_argument('--encoder', type=str, default='vitl', choices=['vits', 'vitl'])
-
+    parser.add_argument('--encoder', type=str, default='vits', choices=['vits', 'vitl'])
 
     args = parser.parse_args()
    
@@ -28,7 +26,6 @@ if __name__ == '__main__':
         with open(args.json_file, 'r') as fs:
             path_json = json.load(fs)
 
-        
         DEVICE = 'cuda' if torch.cuda.is_available() else 'cpu'
 
         model_configs = {
