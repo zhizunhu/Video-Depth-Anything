@@ -106,7 +106,6 @@ def extract_kitti(
                 cv2.imwrite(out_img_path, img)
                 shutil.copyfile(depth_path, out_depth_path)
                 
-
     # 110 frames like DepthCraft
     out_json_path = osp.join(saved_dir, datatset_name, "kitti_video.json")
     gen_json(
