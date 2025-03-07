@@ -18,7 +18,7 @@ if __name__ == '__main__':
     parser.add_argument('--datasets', type=str, nargs='+', default=['scannet', 'nyuv2'])
     
     parser.add_argument('--input_size', type=int, default=518)
-    parser.add_argument('--encoder', type=str, default='vits', choices=['vits', 'vitl'])
+    parser.add_argument('--encoder', type=str, default='vitl', choices=['vits', 'vitl'])
 
 
     args = parser.parse_args()
