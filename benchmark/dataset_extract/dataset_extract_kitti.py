@@ -134,8 +134,8 @@ def extract_kitti(
 
 if __name__ == "__main__":
     extract_kitti(
-        root="/mnt/bn/omnidata/kitti",
-        depth_root="/mnt/bn/omnidata/kitti/val",
+        root="path/to/kitti",
+        depth_root="path/to/kitti/val",
         saved_dir="./benchmark/datasets/",
         sample_len=-1,
         datatset_name="kitti",

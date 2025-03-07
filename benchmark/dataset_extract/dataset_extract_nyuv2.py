@@ -50,7 +50,7 @@ def gen_json(root_path, start_id, end_id, step, save_path=None):
     with open(save_path, "w") as f:
         json.dump(data, f, indent= 4)    
 
-def extract_scannet(
+def extract_nyuv2(
     root,
     sample_len=-1,
     datatset_name="",
@@ -129,8 +129,8 @@ if __name__ == "__main__":
     # we use matlab to extract 8 scenes from NYUv2
     #--basement_0001a, bookstore_0001a, cafe_0001a, classroom_0001a, kitchen_0003, office_0004, playroom_0002, study_0002
     extract_scannet(
-        root="/mnt/bn/mobile-depth-data/video_dataset/scannet_data/scannet1",
+        root="path/to/nyuv2",
         saved_dir="./benchmark/datasets/",
         sample_len=-1,
-        datatset_name="scannet",
+        datatset_name="nyuv2",
     )

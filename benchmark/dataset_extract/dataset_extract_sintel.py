@@ -194,10 +194,10 @@ def extract_sintel(
 
 if __name__ == "__main__":
     extract_sintel(
-        root="/mnt/bn/zfhhuman/sintel/raw/training/clean",
-        depth_root="/mnt/bn/zfhhuman/sintel/depth",
-        pose_root='/mnt/bn/omnidata/video_benchmark_tae/sintel/camdata_left/',
-        rigidity_root='/mnt/bn/omnidata/video_benchmark_tae/sintel/rigidity/',
+        root="path/to/training/clean",
+        depth_root="path/to/depth",
+        pose_root='path/to/sintel/camdata_left/',
+        rigidity_root='path/to/sintel/rigidity/',
         saved_dir="./benchmark/datasets/",
         sample_len=-1,
         datatset_name="sintel",
