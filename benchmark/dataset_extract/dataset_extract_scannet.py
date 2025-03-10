@@ -8,51 +8,9 @@ import cv2
 import json
 import glob
 from natsort import natsorted
-import shutil
+import shutil   
 
-def gen_json(root_path, start_id, end_id, step, save_path=None, original=False):
-    data = {}
-    data["scannet"] = []
-    pieces  = glob.glob(os.path.join(root_path, "*"))
-
-    color = 'color' if not original else 'color_origin'
-
-    for piece in pieces:
-        if not os.path.isdir(piece):
-            continue
-        name = piece.split('/')[-1]
-        name_dict = {name:[]}
-        images = glob.glob(os.path.join(piece,color, "*.jpg"))
-        images = natsorted(images)
-        depths = glob.glob(os.path.join(piece, "depth/*.png"))
-        depths = natsorted(depths)
-        images = images[start_id:end_id:step]
-        depths = depths[start_id:end_id:step]
-        print(f"sequence frame number: {piece}")
-        count = 0
-        for i in range(len(images)):
-            image = images[i]
-            xx = image[len(root_path)+1:]
-            depth = depths[i][len(root_path)+1:]
-            
-            base_path = os.path.dirname(image)
-            base_path = base_path.replace(color, 'intrinsic')
-            K = np.loadtxt(base_path + '/intrinsic_depth.txt')
-
-            pose_path = image.replace(color, 'pose').replace('.jpg', '.txt')
-            pose = np.loadtxt(pose_path)
-            
-            tmp = {}
-            tmp["image"] = xx
-            tmp["gt_depth"] = depth
-            tmp["factor"] = 1000.0
-            tmp["K"] = K.tolist()
-            tmp["pose"] = pose.tolist()
-            name_dict[name].append(tmp)
-        data["scannet"].append(name_dict)
-        
-    with open(save_path, "w") as f:
-        json.dump(data, f, indent= 4)    
+from eval_utils import gen_json, gen_json_scannet_tae, get_sorted_files, copy_crop_files
 
 def extract_scannet(
     root,
@@ -64,11 +22,9 @@ def extract_scannet(
     scenes_names = sorted(scenes_names)[:100]
     all_samples = []
     for i, seq_name in enumerate(tqdm(scenes_names)):
-        all_img_names = os.listdir(osp.join(root, seq_name, "color"))
-        all_img_names = [x for x in all_img_names if x.endswith(".jpg")]
-        all_img_names = sorted(all_img_names, key=lambda x: int(x.split(".")[0]))
-        all_img_names = all_img_names[:510]
-        print(f"sequence frame number: {len(all_img_names)}")
+        all_img_names = get_sorted_files(
+            osp.join(root, seq_name, "color"), suffix=".jpg")
+        all_img_names = all_img_names[:510]   
 
         seq_len = len(all_img_names)
         step = sample_len if sample_len > 0 else seq_len
@@ -85,42 +41,45 @@ def extract_scannet(
                 continue
 
             for idx in range(ref_idx, ref_e):
-                im_path = osp.join(root, seq_name, "color", all_img_names[idx])
+                im_path = osp.join(
+                    root, seq_name, "color", all_img_names[idx]
+                )
                 depth_path = osp.join(
                     root, seq_name, "depth", all_img_names[idx][:-3] + "png"
                 )
                 pose_path = osp.join(
                     root, seq_name, "pose", all_img_names[idx][:-3] + "txt"
                 )
-
-                img = np.array(Image.open(im_path))
-                origin_img = img.copy()
-                img = img[8:-8, 11:-11, :]
                 out_img_path = osp.join(
                     saved_dir, datatset_name, seq_name, "color", all_img_names[idx]
-                )
-                out_img_origin_path = osp.join(
-                    saved_dir, datatset_name, seq_name, "color_origin", all_img_names[idx]
                 )
                 out_depth_path = osp.join(
                     saved_dir, datatset_name, seq_name, "depth", all_img_names[idx][:-3] + "png"
                 )
+                
+                copy_crop_files(
+                    im_path=im_path,
+                    depth_path=depth_path,
+                    out_img_path=out_img_path,
+                    out_depth_path=out_depth_path,
+                    dataset=datatset_name,
+                )
+
+                origin_img = np.array(Image.open(im_path))
+                out_img_origin_path = osp.join(
+                    saved_dir, datatset_name, seq_name, "color_origin", all_img_names[idx]
+                )
                 out_pose_path = osp.join(
                     saved_dir, datatset_name, seq_name, "pose", all_img_names[idx][:-3] + "txt"
                 )
-                os.makedirs(osp.dirname(out_img_path), exist_ok=True)
+                
                 os.makedirs(osp.dirname(out_img_origin_path), exist_ok=True)
-                os.makedirs(osp.dirname(out_depth_path), exist_ok=True)
                 os.makedirs(osp.dirname(out_pose_path), exist_ok=True)
-                cv2.imwrite(
-                    out_img_path,
-                    img,
-                )
+
                 cv2.imwrite(
                     out_img_origin_path,
                     origin_img,
                 )
-                shutil.copyfile(depth_path, out_depth_path)
                 shutil.copyfile(pose_path, out_pose_path)
             
             intrinsic_path = osp.join(
@@ -135,32 +94,25 @@ def extract_scannet(
     # 90 frames like DepthCraft
     out_json_path = osp.join(saved_dir, datatset_name, "scannet_video.json")
     gen_json(
-        root_path=osp.join(saved_dir, datatset_name),
-        start_id=0,
-        end_id=90*3,
-        step=3,
+        root_path=osp.join(saved_dir, datatset_name), dataset=datatset_name,
+        start_id=0,end_id=90*3,step=3,
         save_path=out_json_path,
     )      
 
     #~500 frames in paper
     out_json_path = osp.join(saved_dir, datatset_name, "scannet_video_500.json")    
     gen_json(
-        root_path=osp.join(saved_dir, datatset_name),
-        start_id=0,
-        end_id=500,
-        step=1,
+        root_path=osp.join(saved_dir, datatset_name), dataset=datatset_name,
+        start_id=0,end_id=500,step=1,
         save_path=out_json_path,
     )
 
     # tae 
     out_json_path = osp.join(saved_dir, datatset_name, "scannet_video_tae.json")
-    gen_json(
+    gen_json_scannet_tae(
         root_path=osp.join(saved_dir, datatset_name),
-        start_id=0,
-        end_id=192,
-        step=1,
+        start_id=0,end_id=192,step=1,
         save_path=out_json_path,
-        original=True,
     )
 
 if __name__ == "__main__":

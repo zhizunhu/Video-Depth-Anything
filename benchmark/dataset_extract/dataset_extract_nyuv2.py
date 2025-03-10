@@ -10,39 +10,7 @@ import glob
 from natsort import natsorted
 import shutil
 
-
-def gen_json(root_path, start_id, end_id, step, save_path=None):
-    data = {}
-    data["nyuv2"] = []
-    
-    pieces  = glob.glob(os.path.join(root_path, "*"))
-
-    for piece in pieces:
-        if not os.path.isdir(piece):
-            continue
-        name = piece.split('/')[-1]
-        name_dict = {name:[]}
-        images = glob.glob(os.path.join(piece, "rgb/*.jpg"))
-        images = natsorted(images)
-        depths = glob.glob(os.path.join(piece, "depth/*.png"))
-        depths = natsorted(depths)
-        images = images[start_id:end_id:step]
-        depths = depths[start_id:end_id:step]
-        count = 0
-        for i in range(len(images)):
-            image = images[i]
-            xx = image[len(root_path)+1:]
-            depth = depths[i][len(root_path)+1:]
-            
-            tmp = {}
-            tmp["image"] = xx
-            tmp["gt_depth"] = depth
-            tmp["factor"] = 6000.0
-            name_dict[name].append(tmp)
-        data["nyuv2"].append(name_dict)
-        
-    with open(save_path, "w") as f:
-        json.dump(data, f, indent= 4)    
+from eval_utils import gen_json, get_sorted_files, copy_crop_files
 
 def extract_nyuv2(
     root,
@@ -54,10 +22,8 @@ def extract_nyuv2(
     scenes_names = sorted(scenes_names)
     all_samples = []
     for i, seq_name in enumerate(tqdm(scenes_names)):
-        all_img_names = os.listdir(osp.join(root, seq_name, "rgb"))
-        all_img_names = [x for x in all_img_names if x.endswith(".jpg")]
-        all_img_names = sorted(all_img_names, key=lambda x: int(x.split(".")[0]))
-        print(f"sequence frame number: {len(all_img_names)}")
+        all_img_names = get_sorted_files(
+            osp.join(root, seq_name, "rgb"), suffix=".jpg")
 
         seq_len = len(all_img_names)
         step = sample_len if sample_len > 0 else seq_len
@@ -65,52 +31,39 @@ def extract_nyuv2(
         for ref_idx in range(0, seq_len, step):
             print(f"Progress: {seq_name}, {ref_idx // step + 1} / {seq_len//step}")
 
-            video_imgs = []
-            video_depths = []
-
             if (ref_idx + step) <= seq_len:
                 ref_e = ref_idx + step
             else:
                 continue
 
             for idx in range(ref_idx, ref_e):
-                im_path = osp.join(root, seq_name, "rgb", all_img_names[idx])
+                im_path = osp.join(
+                    root, seq_name, "rgb", all_img_names[idx]
+                )
                 depth_path = osp.join(
                     root, seq_name, "depth", all_img_names[idx][:-3] + "png"
                 )
-            
-                depth = Image.open(im_path)
-                img = np.array(Image.open(im_path))
-
-                img = img[45:471, 41:601, :]
                 out_img_path = osp.join(
                     saved_dir, datatset_name, seq_name, "rgb", all_img_names[idx]
                 )
                 out_depth_path = osp.join(
-                    saved_dir, datatset_name, seq_name, "depth", all_img_names[idx]
+                    saved_dir, datatset_name, seq_name, "depth", all_img_names[idx][:-3] + "png"
                 )
-         
-                os.makedirs(osp.dirname(out_img_path), exist_ok=True)
-                os.makedirs(osp.dirname(out_depth_path), exist_ok=True)
-                
-                cv2.imwrite(
-                    out_img_path,
-                    img,
-                )
-                cv2.imwrite(
-                    out_depth_path,
-                    depth.astype(np.uint16),
+            
+                copy_crop_files(
+                    im_path=im_path,
+                    depth_path=depth_path,
+                    out_img_path=out_img_path,
+                    out_depth_path=out_depth_path,
+                    dataset=dataset_name,
                 )
 
     #~500 frames in paper
     out_json_path = osp.join(saved_dir, datatset_name, "nyuv2_video_500.json")    
     gen_json(
-        root_path=osp.join(saved_dir, datatset_name),
-        start_id=0,
-        end_id=500,
-        step=1,
-        save_path=out_json_path,
-    )
+        root_path=osp.join(saved_dir, datatset_name), dataset=datatset_name,
+        start_id=0,end_id=500,step=1,
+        save_path=out_json_path)
 
 if __name__ == "__main__":
     # we use matlab to extract 8 scenes from NYUv2

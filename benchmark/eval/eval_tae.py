@@ -247,16 +247,6 @@ if __name__ == '__main__':
             args.b = -8
             args.c = 11
             args.d = -11
-        elif dataset == 'sintel':
-            args.json_file = os.path.join(args.benchmark_path,'sintel/sintel_video.json')
-            args.root_path = os.path.join(args.benchmark_path, 'sintel/')
-            args.max_depth_eval = 70
-            args.min_depth_eval = 0.1
-            args.mask = True
-            args.a = 0
-            args.b = 436
-            args.c = 0
-            args.d = 1024
         
         with open(args.json_file, 'r') as fs:
             path_json = json.load(fs)
