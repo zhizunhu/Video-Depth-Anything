@@ -7,12 +7,15 @@ Download datasets from the following links:
 ```bash
 pip3 install natsort
 cd benchmark/dataset_extract
-python dataset_extrtact${dataset}.py
+python3 dataset_extrtact${dataset}.py
 ```
 
 ## Run inference
 ```bash
-bash benchmark/infer/infer.sh
+python3 benchmark/infer/infer.py \
+    --infer_path ${out_path} \
+    --json_file ${json_path} \
+    --datasets ${dataset}
 ```
 
 ## Run evaluation

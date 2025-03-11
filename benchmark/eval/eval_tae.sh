@@ -6,7 +6,7 @@ pred_disp_root=/path/to/saved/root_directory # The parent directory that contani
 benchmark_root=/path/to/gt_depth/root_directory # The parent directory that contaning [sintel, scannet, KITTI, bonn, NYUv2] ground truth
 
 #eval scannet
-python benchmark/eval/eval_tae.py \
+python3 benchmark/eval/eval_tae.py \
     --infer_path $pred_disp_root \
     --benchmark_path $benchmark_root \
     --datasets scannet \
