@@ -2,8 +2,8 @@
 set -x
 set -e
 
-pred_disp_root=/path/to/saved/root_directory # The parent directory that contaning [sintel, scannet, KITTI, bonn, NYUv2] prediction
-benchmark_root=/path/to/gt_depth/root_directory # The parent directory that contaning [sintel, scannet, KITTI, bonn, NYUv2] ground truth
+pred_disp_root=$1 # The parent directory that contaning [sintel, scannet, KITTI, bonn, NYUv2] prediction
+benchmark_root=$2 # The parent directory that contaning [sintel, scannet, KITTI, bonn, NYUv2] ground truth
 
 #eval scannet
 python3 benchmark/eval/eval.py \

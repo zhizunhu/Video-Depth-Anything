@@ -236,8 +236,8 @@ if __name__ == '__main__':
 
         file = open(results_save_path, 'a')
         if dataset == 'scannet':
-            args.json_file = os.path.join(args.benchmark_path,'video_benchmark_tae/scannet/scannet_video.json')
-            args.root_path = os.path.join(args.benchmark_path, 'video_benchmark_tae/scannet/')
+            args.json_file = os.path.join(args.benchmark_path,'scannet/scannet_video.json')
+            args.root_path = os.path.join(args.benchmark_path, 'scannet/')
             args.max_depth_eval = 10.0
             args.min_depth_eval = 0.1
             args.max_eval_len = 200
