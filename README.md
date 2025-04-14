@@ -21,6 +21,7 @@ This work presents **Video Depth Anything** based on [Depth Anything V2](https:/
 ![teaser](assets/teaser_video_v2.png)
 
 ## News
+- **2025-04-05:** Our paper has been accepted for a highlight presentation at CVPR 2025 (13.5% of the accepted papers).
 - **2025-03-11:** Add full dataset inference and evaluation scripts.
 - **2025-02-08:** Enable autocast inference. Support grayscale video, NPZ and EXR output formats.
 - **2025-01-21:** Paper, project page, code, models, and demo are all released.
