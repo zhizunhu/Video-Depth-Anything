@@ -21,7 +21,7 @@ This work presents **Video Depth Anything** based on [Depth Anything V2](https:/
 ![teaser](assets/teaser_video_v2.png)
 
 ## News
-- **2025-07-03:** 🚀🚀🚀 Release an experimental version of training-free streaming video depth estimation.
+- **2025-07-03:** 🚀🚀🚀 Release an experimental version of training-free **streaming video depth estimation**.
 - **2025-07-03:** Release our implementation of [training loss](https://github.com/DepthAnything/Video-Depth-Anything/tree/main/loss).
 - **2025-04-25:** 🌟🌟🌟 Release [metric depth model](https://github.com/DepthAnything/Video-Depth-Anything/tree/main/metric_depth) based on Video-Depth-Anything-Large.
 - **2025-04-05:** Our paper has been accepted for a **highlight** presentation at [CVPR 2025](https://cvpr.thecvf.com/) (13.5% of the accepted papers).
@@ -108,7 +108,7 @@ Options:
 - `--save_npz` (optional): Save the depth map in `npz` format.
 - `--save_exr` (optional): Save the depth map in `exr` format.
 
-### 🚀🚀🚀 Inference a video using streaming mode (Experimental features)
+### Inference a video using streaming mode (Experimental features)
 We implement an experimental streaming mode **without training**. In details, we save the hidden states of temporal attentions for each frames in the caches, and only send a single frame into our video depth model during inference by reusing these past hidden states in temporal attentions. We hack our pipeline to align the original inference setting in the offline mode. Due to the inevitable gap between training and testing, we observe a **performance drop** between the streaming model and the offline model (e.g. the `d1` of ScanNet drops from `0.926` to `0.836`). Finetuning the model in the streaming mode will greatly improve the performance. We leave it for future work.
 
 To run the streaming model:
@@ -129,7 +129,7 @@ Options:
 ### Training Loss
 Our training loss is in `loss/` directory. Please see the `loss/test_loss.py` for usage.
 
-### 🌟🌟🌟 Fine-tuning to a metric-depth video model
+### Fine-tuning to a metric-depth video model
 Please refer to [Metric Depth](./metric_depth/README.md).
 
 ### Benchmark
