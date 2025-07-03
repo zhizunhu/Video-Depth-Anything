@@ -21,6 +21,7 @@ This work presents **Video Depth Anything** based on [Depth Anything V2](https:/
 ![teaser](assets/teaser_video_v2.png)
 
 ## News
+- **2025-07-03:** Release our implementation of [training loss](https://github.com/DepthAnything/Video-Depth-Anything/tree/main/loss).
 - **2025-04-25:** 🌟🌟🌟 Release [metric depth model](https://github.com/DepthAnything/Video-Depth-Anything/tree/main/metric_depth) based on Video-Depth-Anything-Large.
 - **2025-04-05:** Our paper has been accepted for a **highlight** presentation at [CVPR 2025](https://cvpr.thecvf.com/) (13.5% of the accepted papers).
 - **2025-03-11:** Add full dataset inference and evaluation [scripts](https://github.com/DepthAnything/Video-Depth-Anything/tree/main/benchmark).
@@ -70,6 +71,8 @@ We provide **two models** of varying scales for robust and consistent video dept
 |:-|-:|:-:|
 | Video-Depth-Anything-V2-Small | 28.4M | [Download](https://huggingface.co/depth-anything/Video-Depth-Anything-Small/resolve/main/video_depth_anything_vits.pth?download=true) |
 | Video-Depth-Anything-V2-Large | 381.8M | [Download](https://huggingface.co/depth-anything/Video-Depth-Anything-Large/resolve/main/video_depth_anything_vitl.pth?download=true) |
+| Video-Depth-Anything-V2-Large-Metric | 381.8M | [Download](https://huggingface.co/depth-anything/Metric-Video-Depth-Anything-Large/resolve/main/metric_video_depth_anything_vitl.pth) |
+
 
 ## Usage
 
@@ -103,6 +106,15 @@ Options:
 - `--grayscale` (optional): Save the grayscale depth map, without applying color palette.
 - `--save_npz` (optional): Save the depth map in `npz` format.
 - `--save_exr` (optional): Save the depth map in `exr` format.
+
+### Training Loss
+Our training loss is in `loss/` directory. Please see the `loss/test_loss.py` for usage.
+
+### Fine-tuning to a metric-depth video model
+Please refer to [Metric Depth](./metric_depth/README.md).
+
+### Benchmark
+Please refer to [Benchmark](./benchmark/README.md).
 
 ## Citation
 
