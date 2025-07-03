@@ -126,13 +126,13 @@ Options:
 - `--fp32` (optional): Use `fp32` precision for inference. By default, we use `fp16`.
 - `--grayscale` (optional): Save the grayscale depth map, without applying color palette.
 
-### Training Loss
+## Training Loss
 Our training loss is in `loss/` directory. Please see the `loss/test_loss.py` for usage.
 
-### Fine-tuning to a metric-depth video model
+## Fine-tuning to a metric-depth video model
 Please refer to [Metric Depth](./metric_depth/README.md).
 
-### Benchmark
+## Benchmark
 Please refer to [Benchmark](./benchmark/README.md).
 
 ## Citation
