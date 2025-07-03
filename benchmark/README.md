@@ -1,8 +1,8 @@
-# BENCHMARK
+# Benchmark
 
-## Prepare Dataset
+## Prepare Datasets
 Download datasets from the following links:
-[sintel](http://sintel.is.tue.mpg.de/) [kitti](https://www.cvlibs.net/datasets/kitti/) [bonn](https://www.ipb.uni-bonn.de/data/rgbd-dynamic-dataset/index.html) [scannet](http://www.scan-net.org/) [nyuv2](https://cs.nyu.edu/~fergus/datasets/nyu_depth_v2.html)
+[Sintel](http://sintel.is.tue.mpg.de/), [KITTI](https://www.cvlibs.net/datasets/kitti/), [Bonn](https://www.ipb.uni-bonn.de/data/rgbd-dynamic-dataset/index.html), [ScanNet](http://www.scan-net.org/), [NYUv2](https://cs.nyu.edu/~fergus/datasets/nyu_depth_v2.html)
 
 ```bash
 pip3 install natsort
@@ -20,7 +20,7 @@ python3 benchmark/infer/infer.py \
 ```
 Options:
 - `--infer_path`: path to save the output results
-- `--json_file`: path to the json file for the dataset
+- `--json_file`: path to the json file for the dataset, like `sintel_video.json`, `scannet_video_500.json`, `scannet_video_tae.json`
 - `--datasets`: dataset name, choose from `sintel`, `kitti`, `bonn`, `scannet`, `nyuv2`
 
 ## Run evaluation
