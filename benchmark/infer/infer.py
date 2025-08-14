@@ -52,6 +52,7 @@ if __name__ == '__main__':
                     infer_paths.append(infer_path)
                     
                     img = cv2.imread(image_path)
+                    img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
                     videos.append(img)
                 videos = np.stack(videos, axis=0)
                 target_fps=1
