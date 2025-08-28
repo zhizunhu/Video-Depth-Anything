@@ -30,6 +30,7 @@ if __name__ == '__main__':
     parser.add_argument('--target_fps', type=int, default=-1, help='target fps of the input video, -1 means the original fps')
     parser.add_argument('--fp32', action='store_true', help='model infer with torch.float32, default is torch.float16')
     parser.add_argument('--save_npz', action='store_true', help='save depths as npz')
+    parser.add_argument('--save_exr', action='store_true', help='save depths as exr')
     parser.add_argument('--grayscale', action='store_true', help='do not apply colorful palette')
     
     args = parser.parse_args()
