@@ -21,7 +21,7 @@ This work presents **Video Depth Anything** based on [Depth Anything V2](https:/
 ![teaser](assets/teaser_video_v2.png)
 
 ## News
-- **2025-08-28:** Release Video-dpeth_Anything-Base and corresponding metric model.
+- **2025-08-28:** Release Video-Depth-Anything-Base and corresponding metric model.
 - **2025-07-03:** 🚀🚀🚀 Release an experimental version of training-free **streaming video depth estimation**.
 - **2025-07-03:** Release our implementation of [training loss](https://github.com/DepthAnything/Video-Depth-Anything/tree/main/loss).
 - **2025-04-25:** 🌟🌟🌟 Release [metric depth model](https://github.com/DepthAnything/Video-Depth-Anything/tree/main/metric_depth) based on Video-Depth-Anything-Large.
